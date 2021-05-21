@@ -22,6 +22,7 @@ OBJS = \
 	$(OBJ_DIR)/defreader.o \
 	$(OBJ_DIR)/entity.o \
 	$(OBJ_DIR)/entreader.o \
+	$(OBJ_DIR)/entwriter.o \
 	$(OBJ_DIR)/translate.o
 
 INCLUDE=-I$(SRC_DIR)/rapidxml-1.13

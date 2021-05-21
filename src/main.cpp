@@ -12,6 +12,7 @@
 
 #include "defreader.h"
 #include "entreader.h"
+#include "entwriter.h"
 #include "translate.h"
 
 #ifndef DEF2FGD_VERSION
@@ -252,6 +253,8 @@ void printHelp(const char* programName)
             "\n"
             "  -format format       specify format of input: def or ent\n"
             "\n"
+            "  -outformat format    specify format of output: fgd or ent\n"
+            "\n"
             "  -offset-glob pattern add offset to entities matching given pattern;\n"
             "                       this option can be passed multiple times\n"
             "  -noauto-offset-glob  don't use default patterns when setting offset\n"
@@ -294,6 +297,7 @@ void printBobparms(const FGDWriteOptions& options)
 int main(int argc, char** argv)
 {
     const char* format = "";
+    const char* outformat = "";
     const char* inputFileName = 0;
     const char* outputFileName = 0;
     FGDWriteOptions options;
@@ -318,6 +322,19 @@ int main(int argc, char** argv)
                 format = argv[i];
             } else {
                 fputs(translate("-format requires argument\n").c_str(), stderr);
+                return EXIT_FAILURE;
+            }
+        } else if (strcmp(arg, "-outformat") == 0) {
+            if (outformat[0]) {
+                fputs(translate("-outformat option repetition\n").c_str(), stderr);
+                return EXIT_FAILURE;
+            }
+
+            i++;
+            if (i < argc) {
+                outformat = argv[i];
+            } else {
+                fputs(translate("-outformat requires argument\n").c_str(), stderr);
                 return EXIT_FAILURE;
             }
         } else if (strcmp(arg, "-bob") == 0) {
@@ -420,6 +437,24 @@ int main(int argc, char** argv)
         }
     }
 
+    if (outformat[0] == '\0') {
+        if (outputFileName) {
+            const char* extension = strrchr(outputFileName, '.');
+            if (extension && strcmp(extension, ".fgd") == 0){
+                outformat = "fgd";
+            } else if (extension && strcmp(extension, ".ent") == 0) {
+                outformat = "ent";
+            } else {
+                fputs(translate("Could not detect input format. Use -outformat option to explicitly set it.\n").c_str(), stderr);
+                return EXIT_FAILURE;
+            }
+        } else {
+            fputs(translate("No output file name nor format given.\n").c_str(), stderr);
+            printHint(argv[0]);
+            return EXIT_FAILURE;
+        }
+    }
+
     std::istream* inStream = &std::cin;
     std::ostream* outStream = &std::cout;
 
@@ -456,7 +491,15 @@ int main(int argc, char** argv)
             outStream = &outFile;
         }
 
-        writefgd(*outStream, entities, options);
+        if (strcmp(outformat, "fgd") == 0) {
+            writefgd(*outStream, entities, options);
+        } else if (strcmp(outformat, "ent") == 0) {
+            writeEnt(*outStream, entities);
+        } else {
+            fprintf(stderr, translate("Unknown out format '%s'\n").c_str(), outformat);
+            return EXIT_FAILURE;
+        }
+
         outStream->flush();
     }
     catch(DefReadError& e)
