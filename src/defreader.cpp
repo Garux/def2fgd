@@ -253,7 +253,8 @@ std::vector<Entity> readDefFile(std::istream& stream)
                             continue;
                         }
                     }
-                    if (it != end && (*it == ':' || *begin == '\"'))
+                    if (it != end && (*it == ':' || *begin == '\"')
+                        && !entity.hasKey( keyname ) )
                     {
                         if (*it == ':') {
                             it++;
@@ -265,6 +266,10 @@ std::vector<Entity> readDefFile(std::istream& stream)
                         entity.keys.push_back(Key(keyname, description));
 
                         newDescription = true;
+                    }
+                    else //description, not a key or already added
+                    {
+                        push_to_description( line );
                     }
                 }
             } else if ( isspace( line[0] ) ) {
