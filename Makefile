@@ -53,13 +53,16 @@ endif
 
 SOURCES=src/main.cpp src/defreader.cpp src/entity.cpp src/entreader.cpp
 
-all: make_obj_dir make_bin_dir $(TARGET)
+all: make_obj_dir make_bin_dir copy_ent_dic $(TARGET)
 
 make_obj_dir:
 	-mkdir -p $(OBJ_DIR)
 
 make_bin_dir:
 	-mkdir -p $(BIN_DIR)
+
+copy_ent_dic:
+	cp ent.dic $(BIN_DIR)
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
 	$(CXX) $(INCLUDE) -DDEF2FGD_VERSION=\"$(DEF2FGD_VERSION)\" -o $@ -c $< $(CXXFLAGS) $(USER_FLAGS) $(LOCALE_FLAGS)

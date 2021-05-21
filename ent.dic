@@ -1,0 +1,36 @@
+model
+{
+	model
+}
+
+angle
+{
+	angle
+}
+
+angles
+{
+	angles
+}
+
+real
+{
+	modelscale
+}
+
+real3
+{
+	modelscale_vec
+}
+
+color
+{
+	color
+	_color
+}
+
+sound
+{
+	music
+	noise
+}
