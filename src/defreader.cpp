@@ -179,6 +179,13 @@ std::vector<Entity> readDefFile(std::istream& stream)
         std::string::iterator end = line.end();
         std::string::iterator start = it;
 
+        const auto is_key_suffix = [begin, end]( const std::string::const_iterator it ){
+            return *it == ':'
+            || ( *it == '-'
+               && ( it != begin && isspace( *( it - 1 ) ) )
+               && ( ( it + 1 ) != end && isspace( *( it + 1 ) ) ) );
+        };
+
 
         if (inKeys) {
             if (isalpha(line[0]) || line[0] == '_' || line[0] == '\"')
@@ -208,8 +215,8 @@ std::vector<Entity> readDefFile(std::istream& stream)
                 it = skipSpaces(it, end);
                 std::string* found = std::find(entity.spawnflags, entity.spawnflags+Entity::SpawnFlagNum, keyname);
                 if (found != entity.spawnflags+Entity::SpawnFlagNum) {
-
-                    if (it != end && *it == ':') {
+                    it = skipSpaces(it, end);
+                    if (it != end && is_key_suffix(it) ) {
                         it++;
                         it = skipSpaces(it, end);
                     }
@@ -235,7 +242,7 @@ std::vector<Entity> readDefFile(std::istream& stream)
                 }
                 else
                 {
-                    if ((it == end  || *it != ':') && *begin != '\"' )
+                    if ((it == end || !is_key_suffix(it) ) && *begin != '\"' )
                     {
                         start = it;
                         it = skipAlpha(it, end);
@@ -253,10 +260,10 @@ std::vector<Entity> readDefFile(std::istream& stream)
                             continue;
                         }
                     }
-                    if (it != end && (*it == ':' || *begin == '\"')
+                    if (it != end && (is_key_suffix(it) || *begin == '\"')
                         && !entity.hasKey( keyname ) )
                     {
-                        if (*it == ':') {
+                        if (is_key_suffix(it)) {
                             it++;
                         }
                         it = skipSpaces(it, end);
