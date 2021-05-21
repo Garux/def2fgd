@@ -21,6 +21,7 @@ namespace rapidxml
     // Printing flags
 
     const int print_no_indenting = 0x1;   //!< Printer flag instructing the printer to suppress indenting of XML. See print() function.
+    const int print_no_newlines = 0x2;    //!< Printer flag instructing the printer to suppress newlines in XML. See print() function.
 
     ///////////////////////////////////////////////////////////////////////
     // Internal
@@ -157,7 +158,7 @@ namespace rapidxml
             }
             
             // If indenting not disabled, add line break after node
-            if (!(flags & print_no_indenting))
+            if (!(flags & print_no_newlines))
                 *out = Ch('\n'), ++out;
 
             // Return modified iterator
@@ -276,8 +277,9 @@ namespace rapidxml
                 }
                 else
                 {
+                     out = copy_and_expand_chars(node->value(), node->value() + node->value_size(), Ch(0), out);
                     // Print all children with full indenting
-                    if (!(flags & print_no_indenting))
+                    if (!(flags & print_no_newlines))
                         *out = Ch('\n'), ++out;
                     out = print_children(out, node, flags, indent + 1);
                     if (!(flags & print_no_indenting))
