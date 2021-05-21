@@ -127,10 +127,22 @@ std::vector<Entity> readDefFile(std::istream& stream)
 
     bool inKeys = false;
     bool shouldPush = false;
+    bool newDescription = false; // whether to indent extra entity description by new line
     size_t lineNum = 0;
     std::string line;
 
     Entity entity;
+
+    const auto push_to_description = [&newDescription, &entity]( const std::string& line ){
+        if (!entity.description.empty()) {
+            if( newDescription )
+                entity.description += "\n\n";
+            else
+                entity.description += "\n";
+        }
+        entity.description += line;
+        newDescription = false;
+    };
 
     while(getline(stream, line))
     {
@@ -138,6 +150,7 @@ std::vector<Entity> readDefFile(std::istream& stream)
         lineNum++;
 
         if (line.empty()) {
+            newDescription = true;
             continue;
         }
 
@@ -146,6 +159,7 @@ std::vector<Entity> readDefFile(std::istream& stream)
             entity = Entity();
             inKeys = false;
             shouldPush = false;
+            newDescription = false;
         }
 
         if (inKeys) {
@@ -201,6 +215,7 @@ std::vector<Entity> readDefFile(std::istream& stream)
                     }
 
                     entity.flagsdescriptions[found-entity.spawnflags] = withoutQuotes(std::string(it, end));
+                    newDescription = true;
                     continue;
                 }
 
@@ -215,6 +230,7 @@ std::vector<Entity> readDefFile(std::istream& stream)
                         }
                         std::string modelname(start, it);
                         entity.model = modelname;
+                        newDescription = true;
                     }
                 }
                 else
@@ -233,12 +249,7 @@ std::vector<Entity> readDefFile(std::istream& stream)
                         }
                         else //description
                         {
-                            if (entity.description.empty()) {
-                                entity.description = withoutQuotes(line);
-                            } else {
-                                entity.description += "\\n\\n";
-                                entity.description += withoutQuotes(line);
-                            }
+                            push_to_description( line );
                             continue;
                         }
                     }
@@ -252,15 +263,12 @@ std::vector<Entity> readDefFile(std::istream& stream)
                         std::string description = withoutQuotes(std::string(it, end));
 
                         entity.keys.push_back(Key(keyname, description));
+
+                        newDescription = true;
                     }
                 }
             } else if (line[0] == ' ') {
-                if (entity.description.empty()) {
-                    entity.description = withoutQuotes(line);
-                } else {
-                    entity.description += "\\n";
-                    entity.description += withoutQuotes(line);
-                }
+                push_to_description( line );
             }
         } else {
             if (*it == '/')
