@@ -267,7 +267,7 @@ std::vector<Entity> readDefFile(std::istream& stream)
                         newDescription = true;
                     }
                 }
-            } else if (line[0] == ' ') {
+            } else if ( isspace( line[0] ) ) {
                 push_to_description( line );
             }
         } else {
