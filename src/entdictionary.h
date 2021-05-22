@@ -11,18 +11,18 @@ struct StdStringLessNoCase
 {
     using is_transparent = void;
 
-	bool operator()( const std::string& x, const std::string& y ) const {
-		return string_compare_nocase( x.c_str(), y.c_str() );
+	bool operator()( const NcString& x, const NcString& y ) const {
+		return x < y;
 	}
-	bool operator()( const char* x, const std::string& y ) const {
-		return string_compare_nocase( x, y.c_str() );
+	bool operator()( const char* x, const NcString& y ) const {
+		return x < y;
 	}
-	bool operator()( const std::string& x, const char* y ) const {
-		return string_compare_nocase( x.c_str(), y );
+	bool operator()( const NcString& x, const char* y ) const {
+		return x < y;
 	}
 };
 
-using KeyTypes = std::map<std::string, std::string, StdStringLessNoCase>;
+using KeyTypes = std::map<NcString, NcString, StdStringLessNoCase>;
 
 inline KeyTypes readEntDictionary(){
     std::ifstream file( "ent.dic" );

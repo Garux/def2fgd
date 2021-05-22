@@ -75,7 +75,7 @@ namespace
         throw DefReadError(translate("Unexpected symbol"), lineNum, it-begin);
     }
 
-    static std::string::iterator readFlags(std::string::iterator it, size_t lineNum, const std::string::iterator& begin, const std::string::iterator& end, std::string* flags)
+    static std::string::iterator readFlags(std::string::iterator it, size_t lineNum, const std::string::iterator& begin, const std::string::iterator& end, NcString* flags)
     {
         if (it == end)
             return it;
@@ -90,7 +90,7 @@ namespace
             {
                 std::string::iterator start = it;
                 it = skipAlpha(it, end);
-                flags[i] = std::string(start, it);
+                flags[i] = { start, it };
             }
             it = skipSpaces(it, end);
             i++;
@@ -196,7 +196,7 @@ std::vector<Entity> readDefFile(std::istream& stream)
 
                 start = it;
 
-                std::string keyname;
+                NcString keyname;
                 if (*begin == '\"') {
                     while(it != end && *it != '\"') {
                         it++;
@@ -204,16 +204,16 @@ std::vector<Entity> readDefFile(std::istream& stream)
                     if (it == end) {
                         throw DefReadError(translate("Expected pair quote"), lineNum, it-begin);
                     } else {
-                        keyname = std::string(start, it);
+                        keyname = { start, it };
                         it++;
                     }
                 } else {
                     it = skipAlpha(it, end);
-                    keyname = std::string(start, it);
+                    keyname = { start, it };
                 }
 
                 it = skipSpaces(it, end);
-                std::string* found = std::find(entity.spawnflags, entity.spawnflags+Entity::SpawnFlagNum, keyname);
+                NcString* found = std::find(entity.spawnflags, entity.spawnflags+Entity::SpawnFlagNum, keyname);
                 if (found != entity.spawnflags+Entity::SpawnFlagNum) {
                     it = skipSpaces(it, end);
                     if (it != end && is_key_suffix(it) ) {
@@ -246,12 +246,12 @@ std::vector<Entity> readDefFile(std::istream& stream)
                     {
                         start = it;
                         it = skipAlpha(it, end);
-                        if (std::string(start, it) == "OR") //check if this is the field with two names
+                        if (NcString(start, it) == "OR") //check if this is the field with two names
                         {
                             it = skipSpaces(it, end);
                             start = it;
                             it = skipAlpha(it, end);
-                            keyname = std::string(start, it); //take the second name as a key name
+                            keyname = { start, it }; //take the second name as a key name
                             it = skipSpaces(it, end);
                         }
                         else //description

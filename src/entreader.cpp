@@ -157,7 +157,7 @@ std::vector<Entity> readEntFile(std::istream& stream)
                     size_t flagnum = static_cast<size_t>(strtol(bitAttr->value(), NULL, 10));
                     if (flagnum < Entity::SpawnFlagNum)
                     {
-                        entity.spawnflags[flagnum] = valueString(keyAttr);
+                        entity.spawnflags[flagnum] = valueString(keyAttr).c_str();
                         entity.flagsdescriptions[flagnum] = withoutQuotes(valueString(keyNode));
                     }
                 }
@@ -168,7 +168,7 @@ std::vector<Entity> readEntFile(std::istream& stream)
                 if (keyAttr)
                 {
                     entity.keys.push_back(Key(
-                        valueString(keyAttr),
+                        valueString(keyAttr).c_str(),
                         withoutQuotes(valueString(keyNode)),
                         entTypeToFgdType(keyNode->name(), keyNode->name_size())
                     ));

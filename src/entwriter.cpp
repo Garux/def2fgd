@@ -58,9 +58,10 @@ void writeEnt(std::ostream& stream, const std::vector<Entity>& entities){
             {
                 const auto it = keyTypes.find( key.name );
                 if( it != keyTypes.end() ){
-                    keyType = it->second.c_str();
-                    if( entity.solid && string_equal_nocase( keyType, "angle" ) )
-                        keyType = "direction";
+                    if( entity.solid && it->second == "angle" )
+                        keyType = "direction"; // angle specialization for solid classes
+                    else
+                        keyType = it->second.c_str();
                 }
             }
             xml_node<> *keyNode = doc.allocate_node(node_element, keyType, key.description.c_str() );
@@ -68,7 +69,7 @@ void writeEnt(std::ostream& stream, const std::vector<Entity>& entities){
 
             keyNode->append_attribute( doc.allocate_attribute( "key", key.name.c_str() ) );
             {
-                std::string name = key.name;
+                NcString name = key.name;
                 if (!name.empty())
                     name[0] = toupper(name[0]);
                 keyNode->append_attribute( doc.allocate_attribute( "name", doc.allocate_string( name.c_str() ) ) );
@@ -78,13 +79,13 @@ void writeEnt(std::ostream& stream, const std::vector<Entity>& entities){
         for (size_t j=0; j<Entity::SpawnFlagNum; ++j)
         {
             if( !entity.spawnflags[j].empty()
-             && !string_equal_nocase( entity.spawnflags[j].c_str(), "x" )
-             && !string_equal_nocase_n( entity.spawnflags[j].c_str(), "unused", 6 ) ){
+             && entity.spawnflags[j] != "x"
+             && entity.spawnflags[j].compare( 0, 6, "unused" ) != 0 ){
                 xml_node<> *flagNode = doc.allocate_node(node_element, "flag", entity.flagsdescriptions[j].c_str() );
                 entNode->append_node( flagNode );
                 flagNode->append_attribute( doc.allocate_attribute( "key", entity.spawnflags[j].c_str() ) );
                 {
-                    std::string name( entity.spawnflags[j] );
+                    NcString name( entity.spawnflags[j] );
                     for( auto& c : name )
                         c = tolower( c );
                     name[0] = toupper( name[0] );

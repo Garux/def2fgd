@@ -186,7 +186,7 @@ void writefgd(std::ostream& stream, const std::vector<Entity>& entities, const F
         for (size_t j=0; j<entity.keys.size(); ++j)
         {
             const Key& key = entity.keys[j];
-            stream << "\t" << key.name;
+            stream << "\t" << key.name.c_str();
             if (key.name == "target") {
                 stream << "(target_destination) : Target : : ";
             }
@@ -198,7 +198,7 @@ void writefgd(std::ostream& stream, const std::vector<Entity>& entities, const F
             } else if (key.name == "model" || key.name == "model2") {
                 stream << "(studio) : Model : : ";
             } else {
-                std::string name = key.name;
+                std::string name = key.name.c_str();
                 if (!name.empty())
                     name[0] = toupper(name[0]);
                 if (key.type.empty())
@@ -226,7 +226,7 @@ void writefgd(std::ostream& stream, const std::vector<Entity>& entities, const F
             stream << "\t[\n";
             for (size_t j=0; j<Entity::SpawnFlagNum; ++j)
             {
-                std::string flagname = entity.spawnflags[j];
+                std::string flagname = entity.spawnflags[j].c_str();
                 for (size_t k=0; k<flagname.size(); ++k)
                 {
                     flagname[k] = tolower(flagname[k]);

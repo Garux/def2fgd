@@ -19,12 +19,12 @@ std::string withoutQuotes(std::string str)
     return std::string(str.begin(), std::remove(str.begin(), str.end(), '"'));
 }
 
-Key::Key(const std::string& keyname, const std::string& keydescription) : name(keyname), description(keydescription)
+Key::Key(const NcString& keyname, const std::string& keydescription) : name(keyname), description(keydescription)
 {
 
 }
 
-Key::Key(const std::string& keyname, const std::string& keydescription, const std::string& keytype) : name(keyname), description(keydescription), type(keytype)
+Key::Key(const NcString& keyname, const std::string& keydescription, const std::string& keytype) : name(keyname), description(keydescription), type(keytype)
 {
 
 }
@@ -38,7 +38,7 @@ Entity::Entity() : solid(false)
     color[2] = 200;
 }
 
-bool Entity::hasKey(const std::string& name) const
+bool Entity::hasKey(const NcString& name) const
 {
     for (size_t i=0; i<keys.size(); ++i)
     {
@@ -57,7 +57,7 @@ std::ostream& operator<<(std::ostream& out, const Entity& entity)
     out << std::endl;
     for (size_t i=0; i<entity.keys.size(); ++i)
     {
-        out << entity.keys[i].name << " ";
+        out << entity.keys[i].name.c_str() << " ";
     }
     if (!entity.model.empty())
         out << "model=" <<entity.model;
