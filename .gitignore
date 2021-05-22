@@ -24,3 +24,4 @@ defs
 ents
 *.mo
 *~
+.vscode
