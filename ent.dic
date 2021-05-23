@@ -1,6 +1,13 @@
+//keyType
+//{
+//	key1
+//	key2
+//}
+
 model
 {
 	model
+	model2
 }
 
 angle
@@ -13,14 +20,58 @@ angles
 	angles
 }
 
-real
+integer	//string in radiant
+{
+	count
+	dmg
+	_samples
+	gridsize //must be integer3, not supported
+	_blocksize //must be integer3, not supported; though one int value is supported too
+	_castshadows
+	_cs
+	_receiveshadows
+	_rs
+	layers
+	_layers
+	style
+}
+
+real	//string in radiant
 {
 	modelscale
+	wait
+	delay
+	random
+	lip
+	speed
+	phase
+	height
+	roll
+	gravity
+	light
+	_light
+	radius
+	fade
+	scale
+	_deviance
+	_anglescale
+	_filterradius
+	ambient
+	_ambient
+	_lightmapscale
+	_mingridlight
+	_minlight
+	_minvertexlight
+	_farplanedist
+	_scale
+	range
+	weight
 }
 
 real3
 {
 	modelscale_vec
+	origin
 }
 
 color
@@ -33,4 +84,58 @@ sound
 {
 	music
 	noise
+	startsound
+	endsound
+}
+
+boolean
+{
+	health
+	notbot
+	notfree
+	notsingle
+	notteam
+	nobots
+	nohumans
+	_filter
+	_sun
+	_keeplights
+	_noshadersun
+	terrain
+}
+
+texture
+{
+	targetShaderName
+	targetShaderNewName
+	_celshader
+	_foghull
+	_indexmap
+	alphamap
+	shader
+	_shader
+}
+
+string
+{
+	message
+	author
+	author2
+	_styleNalphaGen
+	_styleNrgbGen
+}
+
+targetname	//string in radiant
+{
+	targetname
+}
+
+target	//string in radiant
+{
+	target
+}
+
+array	//string in radiant
+{
+	_remap
 }
