@@ -4,14 +4,15 @@
 using namespace rapidxml;
 #include "string_nocase.h"
 #include "entdictionary.h"
+#include <set>
 
 #ifndef DEF2FGD_VERSION
 #define DEF2FGD_VERSION "unknown (was built without version)"
 #endif
 
-
 void writeEnt(std::ostream& stream, const std::vector<Entity>& entities){
     const KeyTypes keyTypes = readEntDictionary();
+    std::set<NcString> unknownKeys;
 
     xml_document<> doc;
     {
@@ -63,6 +64,9 @@ void writeEnt(std::ostream& stream, const std::vector<Entity>& entities){
                     else
                         keyType = it->second.c_str();
                 }
+                else{
+                    unknownKeys.emplace( key.name );
+                }
             }
             xml_node<> *keyNode = doc.allocate_node(node_element, keyType, key.description.c_str() );
             entNode->append_node( keyNode );
@@ -97,4 +101,7 @@ void writeEnt(std::ostream& stream, const std::vector<Entity>& entities){
     }
 
     rapidxml::print( stream, doc, print_no_indenting );
+
+    for( const auto& unknown : unknownKeys )
+        fprintf(stderr, translate("Unknown key: \"%s\"\n").c_str(), unknown.c_str() );
 }
