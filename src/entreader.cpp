@@ -95,7 +95,7 @@ std::string descriptionLines(const std::string& description)
         if (toReturn.empty()) {
             toReturn = withoutQuotes(line);
         } else {
-            toReturn += "\\n\\n";
+            toReturn += "\n\n";
             toReturn += withoutQuotes(line);
         }
     }
@@ -199,7 +199,7 @@ std::vector<Entity> readEntFile(std::istream& stream)
             }
             if (val.size()) {
                 if (entity.description.size()) {
-                    entity.description += "\\n\\n";
+                    entity.description += "\n\n";
                 }
                 entity.description += descriptionLines(val);
             }

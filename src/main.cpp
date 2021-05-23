@@ -168,17 +168,25 @@ void writefgd(std::ostream& stream, const std::vector<Entity>& entities, const F
         if (!entity.description.empty()) {
             const size_t tokenLimit = 2047;
 
-            if (entity.description.size() > tokenLimit) {
-                stream << " : \"" << entity.description.substr(0, tokenLimit) << "\"";
+            std::string desc;
+            for( const auto c : entity.description ){
+                if( c == '\n' )
+                    desc += "\\n";
+                else
+                    desc += c;
+            }
+
+            if (desc.size() > tokenLimit) {
+                stream << " : \"" << desc.substr(0, tokenLimit) << "\"";
 
                 size_t current = tokenLimit;
-                while(current <= entity.description.size()) {
-                    stream << " + \"" << entity.description.substr(current, tokenLimit) << "\"";
+                while(current <= desc.size()) {
+                    stream << " + \"" << desc.substr(current, tokenLimit) << "\"";
                     current += tokenLimit;
                 }
 
             } else {
-                stream << " : \"" << entity.description << "\"";
+                stream << " : \"" << desc << "\"";
             }
         }
         stream << "\n";
