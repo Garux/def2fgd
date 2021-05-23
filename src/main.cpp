@@ -422,9 +422,9 @@ int main(int argc, char** argv)
     if (format[0] == '\0') {
         if (inputFileName) {
             const char* extension = strrchr(inputFileName, '.');
-            if (extension && strcmp(extension, ".ent") == 0){
+            if (extension && string_equal_nocase(extension, ".ent")){
                 format = "ent";
-            } else if (extension && strcmp(extension, ".def") == 0) {
+            } else if (extension && string_equal_nocase(extension, ".def")) {
                 format = "def";
             } else {
                 fputs(translate("Could not detect input format. Use -format option to explicitly set it.\n").c_str(), stderr);
@@ -440,12 +440,12 @@ int main(int argc, char** argv)
     if (outformat[0] == '\0') {
         if (outputFileName) {
             const char* extension = strrchr(outputFileName, '.');
-            if (extension && strcmp(extension, ".fgd") == 0){
+            if (extension && string_equal_nocase(extension, ".fgd")){
                 outformat = "fgd";
-            } else if (extension && strcmp(extension, ".ent") == 0) {
+            } else if (extension && string_equal_nocase(extension, ".ent")) {
                 outformat = "ent";
             } else {
-                fputs(translate("Could not detect input format. Use -outformat option to explicitly set it.\n").c_str(), stderr);
+                fputs(translate("Could not detect output format. Use -outformat option to explicitly set it.\n").c_str(), stderr);
                 return EXIT_FAILURE;
             }
         } else {
