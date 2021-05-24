@@ -80,20 +80,20 @@ void writeEnt(std::ostream& stream, const std::vector<Entity>& entities){
             }
         }
 
-        for (size_t j=0; j<Entity::SpawnFlagNum; ++j)
+        for (const auto& flag : entity.spawnflags)
         {
-            if( !entity.spawnflags[j].empty() ){
-                xml_node<> *flagNode = doc.allocate_node(node_element, "flag", entity.flagsdescriptions[j].c_str() );
+            if( !flag.name.empty() ){
+                xml_node<> *flagNode = doc.allocate_node(node_element, "flag", flag.description.c_str() );
                 entNode->append_node( flagNode );
-                flagNode->append_attribute( doc.allocate_attribute( "key", entity.spawnflags[j].c_str() ) );
+                flagNode->append_attribute( doc.allocate_attribute( "key", flag.name.c_str() ) );
                 {
-                    NcString name( entity.spawnflags[j] );
+                    NcString name( flag.name );
                     for( auto& c : name )
                         c = tolower( c );
                     name[0] = toupper( name[0] );
                     flagNode->append_attribute( doc.allocate_attribute( "name", doc.allocate_string( name.c_str() ) ) );
                 }
-                flagNode->append_attribute( doc.allocate_attribute( "bit", doc.allocate_string( std::to_string( j ).c_str() ) ) );
+                flagNode->append_attribute( doc.allocate_attribute( "bit", doc.allocate_string( std::to_string( &flag - entity.spawnflags.data() ).c_str() ) ) );
             }
         }
     }

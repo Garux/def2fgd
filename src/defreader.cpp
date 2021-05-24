@@ -75,11 +75,11 @@ namespace
         throw DefReadError(translate("Unexpected symbol"), lineNum, it-begin);
     }
 
-    static std::string::iterator readFlags(std::string::iterator it, size_t lineNum, const std::string::iterator& begin, const std::string::iterator& end, NcString* flags)
+    static std::string::iterator readFlags(std::string::iterator it, size_t lineNum, const std::string::iterator begin, const std::string::iterator end, Entity::SpawnFlags& flags)
     {
         if (it == end)
             return it;
-        int i=0;
+        std::size_t i=0;
         while(it != end && (isalnum(*it) || (*it) == '-'))
         {
             if (*it == '-')
@@ -91,8 +91,10 @@ namespace
                 std::string::iterator start = it;
                 it = skipAlpha(it, end);
                 NcString flagName( start, it );
-                if( flagName != "x" && flagName.compare( 0, 6, "unused" ) != 0 )
-                    flags[i] = flagName;
+                if( flagName != "x"
+                 && flagName.compare( 0, 6, "unused" ) != 0
+                 && i < flags.size() )
+                    flags[i].name = flagName;
             }
             it = skipSpaces(it, end);
             i++;
@@ -215,15 +217,15 @@ std::vector<Entity> readDefFile(std::istream& stream)
                 }
 
                 it = skipSpaces(it, end);
-                NcString* found = std::find(entity.spawnflags, entity.spawnflags+Entity::SpawnFlagNum, keyname);
-                if (found != entity.spawnflags+Entity::SpawnFlagNum) {
+                auto foundFlag = std::find( entity.spawnflags.begin(), entity.spawnflags.end(), keyname );
+                if (foundFlag != entity.spawnflags.end()) {
                     it = skipSpaces(it, end);
                     if (it != end && is_key_suffix(it) ) {
                         it++;
                         it = skipSpaces(it, end);
                     }
 
-                    entity.flagsdescriptions[found-entity.spawnflags] = withoutQuotes(std::string(it, end));
+                    foundFlag->description = withoutQuotes(std::string(it, end));
                     newDescription = true;
                     continue;
                 }

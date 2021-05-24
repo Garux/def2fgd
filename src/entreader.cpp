@@ -155,10 +155,10 @@ std::vector<Entity> readEntFile(std::istream& stream)
                 if (keyAttr && bitAttr)
                 {
                     size_t flagnum = static_cast<size_t>(strtol(bitAttr->value(), NULL, 10));
-                    if (flagnum < Entity::SpawnFlagNum)
+                    if (flagnum < entity.spawnflags.size())
                     {
-                        entity.spawnflags[flagnum] = valueString(keyAttr).c_str();
-                        entity.flagsdescriptions[flagnum] = withoutQuotes(valueString(keyNode));
+                        entity.spawnflags[flagnum].name = valueString(keyAttr).c_str();
+                        entity.spawnflags[flagnum].description = withoutQuotes(valueString(keyNode));
                     }
                 }
             }

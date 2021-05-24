@@ -221,10 +221,11 @@ void writefgd(std::ostream& stream, const std::vector<Entity>& entities, const F
         }
 
         bool hasspawnflags = false;
-        for (size_t j=0; j<Entity::SpawnFlagNum && !hasspawnflags; ++j)
+        for (const auto& flag : entity.spawnflags)
         {
-            if (!entity.spawnflags[j].empty()) {
+            if (!flag.name.empty()) {
                 hasspawnflags = true;
+                break;
             }
         }
 
@@ -232,18 +233,18 @@ void writefgd(std::ostream& stream, const std::vector<Entity>& entities, const F
         {
             stream << "\tspawnflags(flags) = \n";
             stream << "\t[\n";
-            for (size_t j=0; j<Entity::SpawnFlagNum; ++j)
+            for (const auto& flag : entity.spawnflags)
             {
-                std::string flagname = entity.spawnflags[j].c_str();
+                std::string flagname = flag.name.c_str();
                 for (size_t k=0; k<flagname.size(); ++k)
                 {
                     flagname[k] = tolower(flagname[k]);
                 }
 
                 if (!flagname.empty()) {
-                    stream << "\t\t" << (1 << j) << " : \"" << flagname << "\" : 0";
-                    if (!entity.flagsdescriptions[j].empty()) {
-                        stream << " : \"" << entity.flagsdescriptions[j] << "\"";
+                    stream << "\t\t" << (1 << ( &flag - entity.spawnflags.data() )) << " : \"" << flagname << "\" : 0";
+                    if (!flag.description.empty()) {
+                        stream << " : \"" << flag.description << "\"";
                     }
                     stream << '\n';
                 }

@@ -6,6 +6,7 @@
 #include <vector>
 #include <string>
 #include <ostream>
+#include <array>
 #include "string_nocase.h"
 
 unsigned colorFromFloat(float f);
@@ -23,13 +24,20 @@ struct Key
 
 struct Entity
 {
-    constexpr static std::size_t SpawnFlagNum = 32;
-
     std::string name;
     std::string description;
     std::vector<Key> keys;
-    NcString spawnflags[SpawnFlagNum];
-    std::string flagsdescriptions[SpawnFlagNum];
+
+    struct SpawnFlag{
+        NcString name;
+        std::string description;
+        bool operator==( const NcString& string ) const {
+            return name == string;
+        }
+    };
+    using SpawnFlags = std::array<SpawnFlag, 32>;
+    SpawnFlags spawnflags;
+
     float color[3] = { .784f, .0f, .784f };
     int box[6] =     { 0 };
     bool solid =     false;
