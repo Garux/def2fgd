@@ -9,6 +9,7 @@
 #include "string_nocase.h"
 
 unsigned colorFromFloat(float f);
+
 std::string withoutQuotes(std::string str);
 
 struct Key
@@ -22,17 +23,16 @@ struct Key
 
 struct Entity
 {
-    enum {SpawnFlagNum = 32};
+    constexpr static std::size_t SpawnFlagNum = 32;
 
-    Entity();
     std::string name;
     std::string description;
     std::vector<Key> keys;
     NcString spawnflags[SpawnFlagNum];
     std::string flagsdescriptions[SpawnFlagNum];
-    unsigned color[3];
-    int box[6];
-    bool solid;
+    float color[3] = { .784f, .0f, .784f };
+    int box[6] =     { 0 };
+    bool solid =     false;
     std::string model;
 
     bool hasKey(const NcString& name) const;

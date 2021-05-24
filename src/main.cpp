@@ -127,7 +127,7 @@ void writefgd(std::ostream& stream, const std::vector<Entity>& entities, const F
                 }
 
             } else {
-                stream << " color(" << entity.color[0] << ' ' << entity.color[1] << ' ' << entity.color[2] << ") ";
+                stream << " color(" << colorFromFloat(entity.color[0]) << ' ' << colorFromFloat(entity.color[1]) << ' ' << colorFromFloat(entity.color[2]) << ") ";
 
                 if (options.bob) {
                     bool addBob = options.useDefaultBobPatterns && needsBob(entity.name);

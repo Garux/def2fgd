@@ -27,7 +27,7 @@ namespace
         return std::string(elem->value(), elem->value_size());
     }
 
-    static void readColor(const char* begin, size_t size, unsigned* color)
+    static void readColor(const char* begin, size_t size, float (&color)[3])
     {
         const char* end = begin + size;
         const char* current = begin;
@@ -38,7 +38,7 @@ namespace
             const char* start = current;
             while(current != end && (isdigit(*current) || *current == '.'))
                 current++;
-            color[i] = colorFromFloat(static_cast<float>(strtod(start, NULL)));
+            color[i] = strtod(start, NULL);
         }
     }
 

@@ -35,9 +35,9 @@ void writeEnt(std::ostream& stream, const std::vector<Entity>& entities){
 
         entNode->append_attribute( doc.allocate_attribute( "name", entity.name.c_str() ) );
         entNode->append_attribute( doc.allocate_attribute( "color",
-            doc.allocate_string( ( std::to_string( entity.color[0] / 255.f ) + " "
-                                 + std::to_string( entity.color[1] / 255.f ) + " "
-                                 + std::to_string( entity.color[2] / 255.f ) ).c_str() ) ) );
+            doc.allocate_string( ( std::to_string( entity.color[0] ) + " "
+                                 + std::to_string( entity.color[1] ) + " "
+                                 + std::to_string( entity.color[2] ) ).c_str() ) ) );
 
         if (!entity.solid) {
             entNode->append_attribute( doc.allocate_attribute( "box",

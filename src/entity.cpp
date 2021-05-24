@@ -8,10 +8,7 @@
 
 unsigned colorFromFloat(float f)
 {
-    unsigned u = static_cast<unsigned>(ceil(f*255));
-    if (u > 255)
-        u = 255;
-    return u;
+    return std::min( static_cast<unsigned>(ceil(f*255)), 255u );
 }
 
 std::string withoutQuotes(std::string str)
@@ -27,15 +24,6 @@ Key::Key(const NcString& keyname, const std::string& keydescription) : name(keyn
 Key::Key(const NcString& keyname, const std::string& keydescription, const std::string& keytype) : name(keyname), description(keydescription), type(keytype)
 {
 
-}
-
-Entity::Entity() : solid(false)
-{
-    for (size_t i=0; i<6; ++i)
-        box[i] = 0;
-    color[0] = 200;
-    color[1] = 0;
-    color[2] = 200;
 }
 
 bool Entity::hasKey(const NcString& name) const
