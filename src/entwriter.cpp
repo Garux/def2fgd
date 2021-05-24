@@ -82,9 +82,7 @@ void writeEnt(std::ostream& stream, const std::vector<Entity>& entities){
 
         for (size_t j=0; j<Entity::SpawnFlagNum; ++j)
         {
-            if( !entity.spawnflags[j].empty()
-             && entity.spawnflags[j] != "x"
-             && entity.spawnflags[j].compare( 0, 6, "unused" ) != 0 ){
+            if( !entity.spawnflags[j].empty() ){
                 xml_node<> *flagNode = doc.allocate_node(node_element, "flag", entity.flagsdescriptions[j].c_str() );
                 entNode->append_node( flagNode );
                 flagNode->append_attribute( doc.allocate_attribute( "key", entity.spawnflags[j].c_str() ) );

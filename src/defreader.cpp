@@ -90,7 +90,9 @@ namespace
             {
                 std::string::iterator start = it;
                 it = skipAlpha(it, end);
-                flags[i] = { start, it };
+                NcString flagName( start, it );
+                if( flagName != "x" && flagName.compare( 0, 6, "unused" ) != 0 )
+                    flags[i] = flagName;
             }
             it = skipSpaces(it, end);
             i++;
