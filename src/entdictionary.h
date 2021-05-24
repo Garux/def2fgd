@@ -24,9 +24,14 @@ struct StdStringLessNoCase
 
 using KeyTypes = std::map<NcString, NcString, StdStringLessNoCase>;
 
-inline KeyTypes readEntDictionary(){
-    std::ifstream file( "ent.dic" );
+inline KeyTypes readEntDictionary( const char *appPath ){
+    std::ifstream file;
     KeyTypes keyTypes;
+    {
+        const char *slash = std::max( strrchr( appPath, '/' ), strrchr( appPath, '\\' ) );
+        slash = std::max( slash, appPath - 1 ) + 1;
+        file.open( std::string( appPath, slash - appPath ) + "ent.dic" );
+    }
     if( file ){
         std::string string;
         std::getline( file, string, char( 0 ) );

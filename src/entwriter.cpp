@@ -10,8 +10,8 @@ using namespace rapidxml;
 #define DEF2FGD_VERSION "unknown (was built without version)"
 #endif
 
-void writeEnt(std::ostream& stream, const std::vector<Entity>& entities){
-    const KeyTypes keyTypes = readEntDictionary();
+void writeEnt(std::ostream& stream, const std::vector<Entity>& entities, const char *appPath){
+    const KeyTypes keyTypes = readEntDictionary( appPath );
     std::set<NcString> unknownKeys;
 
     xml_document<> doc;

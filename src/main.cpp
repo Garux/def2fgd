@@ -503,7 +503,7 @@ int main(int argc, char** argv)
         if (strcmp(outformat, "fgd") == 0) {
             writefgd(*outStream, entities, options);
         } else if (strcmp(outformat, "ent") == 0) {
-            writeEnt(*outStream, entities);
+            writeEnt(*outStream, entities, argv[0]);
         } else {
             fprintf(stderr, translate("Unknown out format '%s'\n").c_str(), outformat);
             return EXIT_FAILURE;
