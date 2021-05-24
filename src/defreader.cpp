@@ -131,7 +131,7 @@ std::vector<Entity> readDefFile(std::istream& stream)
 
     bool inKeys = false;
     bool shouldPush = false;
-    bool newDescription = false; // whether to indent extra entity description by new line
+    bool newDescription = false; // whether to indent extra entity description by empty line
     size_t lineNum = 0;
     std::string line;
 
@@ -179,8 +179,8 @@ std::vector<Entity> readDefFile(std::istream& stream)
         }
 
         std::string::iterator it = line.begin();
-        std::string::iterator begin = line.begin();
-        std::string::iterator end = line.end();
+        const std::string::iterator begin = line.begin();
+        const std::string::iterator end = line.end();
         std::string::iterator start = it;
 
         const auto is_key_suffix = [begin, end]( const std::string::const_iterator it ){
@@ -278,7 +278,7 @@ std::vector<Entity> readDefFile(std::istream& stream)
 
                         newDescription = true;
                     }
-                    else //description, not a key or already added
+                    else //description: not a key or already added
                     {
                         push_to_description( line );
                     }
