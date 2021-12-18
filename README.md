@@ -4,8 +4,7 @@ def2fgd is tool for converting .def and .ent entity definition files used by Gtk
 
 # Download
 
-Portable versions for Windows and Linux: [Releases](https://github.com/FreeSlave/def2fgd/releases).
-Packages for some Linux distros: [OBS](https://software.opensuse.org//download.html?project=home%3AFreeSlave&package=def2fgd).
+Portable versions for Windows and Linux: [Releases](/../../releases).
 
 # Usage
 
