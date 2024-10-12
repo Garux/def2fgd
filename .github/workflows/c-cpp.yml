@@ -12,11 +12,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
     - name: make
       run: make USER_FLAGS="-s -O3"
 
-    - uses: actions/upload-artifact@v2
+    - uses: actions/upload-artifact@v4
       with:
         name: def2fgd2ent Linux
         path: bin/
@@ -28,11 +28,11 @@ jobs:
 
     steps:
     - uses: msys2/setup-msys2@v2
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
     - name: make
       run: make USER_FLAGS="-s -O3 -static"
 
-    - uses: actions/upload-artifact@v2
+    - uses: actions/upload-artifact@v4
       with:
         name: def2fgd2ent Windows
         path: bin/
