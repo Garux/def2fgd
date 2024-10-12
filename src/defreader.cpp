@@ -85,9 +85,9 @@ namespace
         if (it == end)
             return it;
         std::size_t i=0;
-        while(it != end && (isalnum(*it) || (*it) == '-'))
+        while(it != end && (isalnum(*it) || (*it) == '-' || (*it) == '?')) // '?' : nonstandard fuckage
         {
-            if (*it == '-')
+            if (*it == '-' || *it == '?')
             {
                 it++;
             }
